@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Thank you for completing the booking simulation.</h2>
+  <p>Your responses are now being submitted...</p>
+  <p>You may now close this window.</p>
+
+  <script>
+    // Collect participant data
+    const gazeData = localStorage.getItem('gazeData') || '';
+    const intentionsRaw = localStorage.getItem('intentions') || '';
+    const intentions = {};
+    intentionsRaw.split('\n').forEach(row => {
+      const [trial, score] = row.split(',');
+      if (trial && score) intentions[trial] = score;
+    });
+
+    // Generate or reuse participant ID
+    let participantId = localStorage.getItem("participant_id");
+    if (!participantId) {
+      participantId = 'user_' + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem("participant_id", participantId);
+    }
+
+    // Build payload
+    const payload = {
+      participant_id: participantId,
+      trial1_score: intentions['trial1'] || '',
+      trial2_score: intentions['trial2'] || '',
+      trial3_score: intentions['trial3'] || '',
+      gaze_data: gazeData
+    };
+
+    // Submit to Google Script
+    fetch("https://script.google.com/macros/s/AKfycbwWga1iu19A0IinWYc7rFcdDGrqmp26pLJ__Wm2-G3WdKCtEw7y_Ws1NKX47EH9NpjQGg/exec", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => {
+      console.log("Data submitted:", response);
+    }).catch(error => {
+      console.error("Submission error:", error);
+    });
+
+    // Optional: clear localStorage to prevent resubmission
+    setTimeout(() => {
+      localStorage.removeItem('gazeData');
+      localStorage.removeItem('intentions');
+    }, 3000);
+  </script>
+</body>
+</html>

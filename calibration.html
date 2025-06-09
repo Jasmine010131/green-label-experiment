@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calibration</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+</head>
+<body>
+  <h2>Eye-Tracking Calibration</h2>
+  <p>Please follow the dot around the screen to calibrate your gaze.</p>
+  <canvas id="calibrationCanvas" width="800" height="600" style="border:1px solid #ccc;"></canvas>
+  <br>
+  <button onclick="finishCalibration()">Finish Calibration</button>
+
+  <script>
+    function finishCalibration() {
+      window.location.href = 'trial1.html?group=evaluation';
+    }
+
+    // Simple dot pattern calibration (manual)
+    const canvas = document.getElementById('calibrationCanvas');
+    const ctx = canvas.getContext('2d');
+    const points = [
+      [100, 100], [700, 100], [400, 300], [100, 500], [700, 500]
+    ];
+    let index = 0;
+
+    function drawNext() {
+      if (index >= points.length) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const [x, y] = points[index];
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = "red";
+      ctx.fill();
+      index++;
+      setTimeout(drawNext, 1500);
+    }
+
+    window.onload = function () {
+      webgazer.begin();
+      webgazer.showVideo(false).showFaceOverlay(false).showFaceFeedbackBox(false);
+      drawNext();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome / 欢迎</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Welcome to the Online Booking Simulation / 欢迎参加在线酒店预订模拟实验</h2>
+
+  <p>Thank you for participating in this user experience study. / 感谢您参与本次用户体验研究。</p>
+  <p>You will see a series of hotel booking pages. Please review them as if planning a real trip. / 您将看到多个酒店预订页面，请根据自己的真实想法浏览并评估。</p>
+
+  <p><strong>Note:</strong> This experiment uses your webcam to anonymously track eye movement. No image or video will be recorded. / <strong>说明：</strong> 本实验会调用您的摄像头以进行眼动追踪，仅用于学术研究，不会采集任何图像或视频。</p>
+
+  <p>Please enable your webcam and ensure you are seated comfortably. / 请确保摄像头已开启，并在电脑前保持舒适坐姿。</p>
+
+  <form onsubmit="event.preventDefault(); if(document.getElementById('consent').checked){ window.location.href='calibration.html'; } else { alert('You must agree to proceed. / 您必须勾选同意才能继续。'); }">
+    <input type="checkbox" id="consent" required>
+    <label for="consent">I have read and voluntarily agree to participate in this academic study. / 我已阅读并同意自愿参与本学术研究。</label><br><br>
+    <button type="submit">Start Experiment / 开始实验</button>
+  </form>
+</body>
+</html>
